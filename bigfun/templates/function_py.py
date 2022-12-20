@@ -1,3 +1,5 @@
+import traceback
+
 from flask import Flask, request, jsonify
 
 import google.cloud.error_reporting
@@ -17,8 +19,14 @@ def handle():
         request_json = request.get_json()
         print(request_json)
         rows = request_json['calls']
+        if len(rows) > 1:
+            return f'''
+                Hi 👋! Thanks for using BigFunctions! ---
+                `{{ name }}` BigFunction only accept calls on 1 row at a time (for now). ---
+                To remove this limit 🚀, please send an email to paul.marcombes@unytics.io
+            ''', 400
         replies = [compute(row) for row in rows]
         return jsonify( { "replies" :  replies} )
     except Exception:
         error_reporter.report_exception(google.cloud.error_reporting.build_flask_context(request))
-        return jsonify( { "errorMessage": 'something unexpected in input' } ), 400
+        return traceback.format_exc(), 400

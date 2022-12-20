@@ -7,14 +7,14 @@ author:
 description: Compute sentiment score of text
 arguments:
   - name: content
-    type: STRING
+    type: string
 output:
   name: sentiment_score
-  type: FLOAT64
+  type: float64
 examples:
   - description: ""
     arguments:
-      - "'BigFunctions Rock!'"
+      - "'BigFunctions Rocks!'"
     output: "0.945"
     region: ALL
 code: |
